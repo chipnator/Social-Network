@@ -7,7 +7,9 @@ class Student{
 	protected String id;    
 	protected Idealist ideas; //Idealist
 
-	public void Student(String firstNameIn, String lastNameIn, String emailIn){ 
+	//public Student[](length) //constructor for Student[]
+	
+	public Student(String firstNameIn, String lastNameIn, String emailIn){ 
 		firstName=firstNameIn; 
 		lastName=lastNameIn;
 		email=emailIn;

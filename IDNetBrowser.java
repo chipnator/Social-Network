@@ -4,14 +4,10 @@
 //requires SocialNetwork class
 //required nodes: Student node class, Idea node class
 
-// need this tokenizer to parse string into pieces
-import java.util.StringTokenizer;
-
-// need this scanner to take input from terminal (command line)
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Scanner;
-
-// needed to fix the strange print problem ~~~~idk maybe not needed, remnant~~~~
-import java.io.PrintStream;
+import java.util.StringTokenizer;
 
 public class IDNetBrowser {
 	public static void main(String[] args) {
@@ -143,7 +139,7 @@ public class IDNetBrowser {
 				//admin can remove user or change user's info
 				Student[] allUsers = theNet.showAllUsers();
 				//length of the user list
-				int theSize = allUsers.length();
+				int theSize = allUsers.length;
 				System.out.println("All users in database");
 				if(!admin){System.out.println("As user, one may \"vote\" on a specific user's info, referenced by number");}
 				if(admin){System.out.println("As Admin, one may \"remove\" or \"change\" the user's info, referenced by number");}
@@ -227,7 +223,7 @@ public class IDNetBrowser {
 			else if (inStr.compareTo("CNU")==0 && admin){ 
 				//users can only access this dialogue before they log in
 				System.out.println("Administrator Creating a New User");
-				/* NEEDS WORK */
+				theNet.createNewUser();
 			}
 			
 			

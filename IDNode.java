@@ -3,7 +3,7 @@
 class IDNode{
 	protected Student owner;
 	protected int rating;
-	protected SLinked raterList; //user who already voted
+	protected Idea.SLinked raterList; //user who already voted
 	protected String idea;
 	
 	public void IDNode(Student ownIn, int ratIn, String ideaIn){
@@ -17,7 +17,7 @@ class IDNode{
 	}
 	
 	public void setRating(int ratIn){
-		rating = radIn;
+		rating = ratIn;
 	}
 	
 	public Student getOwner(){

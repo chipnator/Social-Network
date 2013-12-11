@@ -6,7 +6,13 @@
  * methods will simply be called, not called inside print statements
  */
 // need this scanner to take input from terminal (command line)
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 
 public class SocialNetwork{
 	protected HashTable userHash;
@@ -16,11 +22,12 @@ public class SocialNetwork{
 		
 		//reading in user data file
 		String fileName = "DataFile1.txt";
+		//String fileName = "~/Users/chipnator/Social Network/DataFile1.txt";
 		//check for most recent data file
 		//String checkName = "DataFile"+num+".txt"
 		//while(file checkName num+1 exists)
 			//num++
-		HashTable userHash = new HashTable(101);//initalizes the userHash
+		userHash = new HashTable(101);//initalizes the userHash
 		getDatabase(fileName);  
 		awardCheck();
 	}
@@ -29,28 +36,37 @@ public class SocialNetwork{
 	public void getDatabase(String fileName) {
 		//read in user data file
 		//Initalize hash
-		 
-		//created scanner object to take in data file
-		Scanner dataIn = new Scanner(fileName);
-		//How to get next line: dataIn.nextLine()
-		
-		int fileCount = 0;
-		String line1 = " ";
-		String line2 = " ";
-		while(line1!=null && line2!=null){
-			String first = dataIn.nextLine();
-			String last = dataIn.nextLine();
-			String email = dataIn.nextLine();
-			Student newStud = new Student(first,last,email); //creates new student
-			userHash.put(newStud.getID(),newStud); //adds newStud to hash
-			line1 = dataIn.nextLine();
-			line2 = dataIn.nextLine();
-			while(line1.compareTo("\n")!=0 && line2.compareTo("\n")!=0 ){
-				newStud.addIdea(line1);
-				line1 = line2;
+		try{
+			//created scanner object to take in data file
+			//Scanner dataIn = new Scanner(file);
+			//
+			String[] fileAr = new String[1];
+			fileAr[0]=fileName;
+			//File file = new FileReader(fileName);
+			Scanner dataIn = new Scanner(new FileReader(fileAr[0]));
+			//How to get next line: dataIn.nextLine()
+			
+			int fileCount = 0;
+			String line1 = " ";
+			String line2 = " ";
+			while(line1!=null && line2!=null){
+				String first = dataIn.nextLine();
+				String last = dataIn.nextLine();
+				String email = dataIn.nextLine();
+				Student newStud = new Student(first,last,email); //creates new student
+				userHash.put(newStud.getID(),newStud); //adds newStud to hash
+				line1 = dataIn.nextLine();
 				line2 = dataIn.nextLine();
+				while(line1.compareTo("\n")!=0 && line2.compareTo("\n")!=0 ){
+					newStud.addIdea(line1);
+					line1 = line2;
+					line2 = dataIn.nextLine();
+				}
+				fileCount++;
 			}
-			fileCount++;
+		}
+		catch(FileNotFoundException e){ 
+			System.out.println("File Not Found");
 		}
 	}
 	
@@ -88,21 +104,21 @@ public class SocialNetwork{
 				awOut[a+(5*lo)]=awIn[a];
 			}
 		}
-		for(int hi;hi<10;hi++){
+		for(int hi=0;hi<10;hi++){
 			System.out.println(hi+" | "+awOut[hi].getIdea());
 		}
 		return awOut;
 	}
 
-	
+	/*
 	//showTopIdeas 
 	public Idea[] showTopIdeas(int numToShow){
 		//print numToShow #of ideas, sorted by votes in descending numberical order
 		//if no idea detected, should be able to handle error 
 		Idea[] ideaAr = new Idea[numToShow];
-		/* NEEDS DOING */
+		// NEEDS DOING 
 	}
-   
+	*/
    
 	//showUserBase - prints " name | email " 
 	public void showUserBase(Student inStud){
@@ -124,7 +140,7 @@ public class SocialNetwork{
 	}
 	
 	
-	public void showUserInfo(Student inStud, int inNum, String inIdea){ 
+	public void showUserInfo(Student inStud, int inNum){ 
 		//prints " name | email " then the Ideas " votes | idea ", 
 		//uses showUserBase, then prints user's ideas, for one user
 		String first = inStud.getFirstName();
@@ -135,7 +151,7 @@ public class SocialNetwork{
 		Idea[] ideaLi=inStud.getIdeas();
 		System.out.println(idCode + " | "+first+" "+last+ " | "  + email);
 		int kt=0;
-		while(kt<5 && ideaLi[kt]!=null){System.out.println(ideaLi[kt]);}
+		while(kt<5 && ideaLi[kt]!=null){System.out.println(" ~~~ "+ideaLi[kt]);}
 	}
 	
 	
@@ -248,8 +264,7 @@ public class SocialNetwork{
 		}
 	}
 	
-	/*
-	*
+
 	public Student[] showAllData(){ 
 		//getKeys then showUserInfo(key) - returns Student[]
 		//getKeys, for each showUserBase(key)
@@ -263,10 +278,13 @@ public class SocialNetwork{
 			//showUsersInfo(key).getKeys();
 			//showUserInfo(key);
 			//showUserBase(key);
-		// NEEDS DOING 
+		String[] allKeys = userHash.keySet();
+		Student[] allStuds = new Student[allKeys.length];
+		for(int y=0;y<allKeys.length;y++){
+			allStuds[y]=userHash.get(allKeys[y]);
+		}
+		return allStuds;
 	}
-	*
-	*/
 	
 	public Student[] showAllUsers(){
 		//getKeys then showUserBase(key) - returns Student[]
@@ -274,9 +292,10 @@ public class SocialNetwork{
 			//showUserBase - prints "userName | userEmail"
 		//admin and user can showUserInfo for further options
 		String[] allKeys = userHash.keySet();
-		Student[] allStuds = Student[allKeys.length()];
-		for(int y=0;y<allKeys.length();y++){
+		Student[] allStuds = new Student[allKeys.length];
+		for(int y=0;y<allKeys.length;y++){
 			allStuds[y]=userHash.get(allKeys[y]);
+			showUserInfo(allStuds[y], y);
 		}
 		return allStuds;
 	}

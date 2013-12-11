@@ -52,18 +52,20 @@ public class Idea{
 
 
 	public Idea(Student ownerIn, String ideaIn){ // constructor
-		Student owner = ownerIn;
+		owner = ownerIn;
 		int rating = 0;
+		System.out.println(ideaIn);
 		try{
 			int p=0;
 			for(int i=0;i<ideaIn.length();i++){
 				if(ideaIn.substring(i,i+1).compareTo("|")==0){i=p;}
 			}
-			rating=Integer.parseInt(ideaIn.substring(0,p));
+			String thisThing = ideaIn.substring(0,p).trim();
+			rating=Integer.parseInt(thisThing);
 		}
 		finally{
 			SLinked voted = new SLinked();
-			String ideastr = ideaIn;
+			ideastr = ideaIn;
 		}
 	}
 	
