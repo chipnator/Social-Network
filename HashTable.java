@@ -1,48 +1,48 @@
-public class HashTable<K,V> {
+public class HashTable {
 
-	public class HashEntry<K,V> {
-		protected K key;
-		protected V value;
-		public HashEntry(K k, V v) { key = k; value = v;}
-		public V getValue() {return value;}
-		public K getKey() {return key;}
-		public V setValue(V val) {
-			V oldValue = value;
+	public class HashEntry {
+		protected String key; //k is key is String, v is value is Student
+		protected Student value;
+		public HashEntry(String k, Student v) { key = k; value = v;}
+		public Student getValue() {return value;}
+		public String getKey() {return key;}
+		public Student setValue(Student val) {
+			Student oldValue = value;
 			value = val;
 			return oldValue;
 		}
 		public boolean equals(Object o){
-			HashEntry<K,V> ent;
-			try{ent = (HashEntry<K,V>) o; }   //turns o into HashEntry
+			HashEntry ent;
+			try{ent = (HashEntry) o; }   //turns o into HashEntry
 			catch(ClassCastException ex) {return false;} //returns when o is not a HashEntry
 			return(ent.getKey()==key) && (ent.getValue()==value); //returns if the key and value are equal
 		}
 	}
 	protected int numEnt=0;	//number of entries
 	protected int capacity;
-	protected HashEntry<K,V>[] userStorage;	//userStorage array
+	protected HashEntry[] userStorage;	//userStorage array
 	//Creates a hashtable with given capacity
 	public HashTable(int cap) {		
 		capacity=cap;
-		userStorage = (HashEntry<K,V>[]) new HashEntry[capacity];
+		userStorage = (HashEntry[]) new HashEntry[capacity];
 	}       
 	
 	//Determines if key is valid
-	protected void checkKey(K email) {
+	protected void checkKey(String email) {
 		if (email==null){
 			System.out.println("Invalid key");
 		}
 	}
 	
 	//Hash function that applies MAD method to default hash code
-	public int hashValue(K key) {
+	public int hashValue(String key) {
 		return (int) (Math.abs(key.hashCode()))%capacity;
 	}
 	
 	
 	//Returns the obect array that contains all keys
-	public Object[] keySet() {
-		Object[] keys = new Object[capacity];   //creates new key
+	public String[] keySet() {
+		String[] keys = new String[capacity];   //creates new key
 		for(int i=0; i<capacity; i++) {
 			if((userStorage[i]!=null)){
 				keys[i]=userStorage[i].getKey();   //checks every key mapped into hash table and takes key and puts into array
@@ -51,10 +51,11 @@ public class HashTable<K,V> {
 		return keys;
 	}
 	
-	/*Helper search method - returns index of found key or -(a-1) where a is he index
-	of the first empty or available slot found (pages 403-404)*/
+	
+	//Helper search method - returns index of found key or -(a-1) where a is
+	//  the index of the first empty or available slot found (pages 403-404)
 	//Checks if key is there
-	public Integer findEntry(K key) {
+	public Integer findEntry(String key) {
 		int avail= -1;
 		if(key==null){
 			System.out.println("Invalid entry");
@@ -64,7 +65,7 @@ public class HashTable<K,V> {
 			int i=hashValue(key);
 			int j=i;
 			do{
-				HashEntry<K,V> curEnt =userStorage[i];
+				HashEntry curEnt =userStorage[i];
 				if(curEnt==null){
 					if(avail<0){
 						avail=i;
@@ -82,36 +83,37 @@ public class HashTable<K,V> {
 	}
 	
 	
-	public boolean checkEntry(K key){
+	public boolean checkForKey(String key){
 		//Checks if key is there, returns boolean
+		return key!=null;
 	}
 	
 	/*Returns the value associated with a key*/
 	//Takes key and finding if that key is mapped to anything
-	public V get(K key){
+	public Student get(String key){
 		int i=findEntry(key);
 		if(i<0){return null;}
 		return userStorage[i].getValue();	//if anything is mapped returns
 	}
 	
 	//Put a key-value pair in the ap, replacing previous one if it exists
-	public void put(K key, V value) {
+	public void put(String key, Student value) {
 		int i=findEntry(key); 		//finds appropriate spot for this entry
 		if(numEnt>=capacity/2){
 			rehash();
 			i=findEntry(key); 	//finds appropriate spot for the entry
 		}
-		userStorage[-i-1] = new HashEntry<K,V>(key,value); //creating new entry and putting inside userStorage
+		userStorage[-i-1] = new HashEntry(key,value); //creating new entry and putting inside userStorage
 		numEnt++;
 	}
 	
 	//Doubles the size of the hash table and rehashes all of the entries
 	protected void rehash() {
 		capacity = 2*capacity;
-		HashEntry<K,V>[] old = userStorage;
-		userStorage = (HashEntry<K,V>[]) new HashEntry[capacity];//new userStorage that is twice as big
+		HashEntry[] old = userStorage;
+		userStorage = (HashEntry[]) new HashEntry[capacity];//new userStorage that is twice as big
 		for(int i=0; i<old.length; i++){
-			HashEntry<K,V> curEnt = old[i];
+			HashEntry curEnt = old[i];
 			if((curEnt!=null)){
 				int j = -1-findEntry(curEnt.getKey());
 				userStorage[j] = curEnt;
@@ -120,26 +122,28 @@ public class HashTable<K,V> {
 	}
 	
 	//Removes the key-value pair with a specified key
-	public V remove (K key) {
+	public Student remove (String key) {
 		int entr = findEntry(key);
 		if(entr<0) return null;		//if no value returns null
-		V toReturn = userStorage[entr].getValue();
+		Student toReturn = userStorage[entr].getValue();
 		userStorage[entr]=null;		//action of removing by setting to null
 		numEnt--;	//decreasing size
 		return toReturn;
 	}
 	
 	
-	public String[] returnListKeys(){
+	/*public String[] returnListKeys(){
 		//returns list of keys
-		/* NEEDS DOING */
+		// NEEDS DOING 
 	}
+	*/
 	
 	
-	public V[] returnListValues(V value){
+	/*public Student[] returnListValues(Student value){
 		//returns list of values
-		/* NEEDS DOING */
+		/* NEEDS DOING 
 	}
+	*/
 	
 	//hashSize gives the size of the hash
 	//Returns the number of entries in the hash table
