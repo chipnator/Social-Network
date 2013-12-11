@@ -79,16 +79,17 @@ public class SocialNetwork{
 	public Idea[] showAwards(){
 		//awardCheck
 		//print top 10
+		String awName="";
 		Idea[] awOut = new Idea[10];
 		for(int lo=0;lo<2;lo++){
-			awName="award"+Integer.parseInt(lo+1);
+			awName="award"+lo+1;
 			Idea[] awIn = userHash.get(awName).getIdeas();
 			for(int a=0;a<5;a++){
 				awOut[a+(5*lo)]=awIn[a];
 			}
 		}
 		for(int hi;hi<10;hi++){
-			System.out.println(Integer.parseInt(hi)+" | "+awOut[hi].getIdea());
+			System.out.println(hi+" | "+awOut[hi].getIdea());
 		}
 		return awOut;
 	}
@@ -117,7 +118,8 @@ public class SocialNetwork{
 		String first = inStud.getFirstName();
 		String last = inStud.getLastName();
 		String email = inStud.getEmail();
-		String num = inNum.toString();
+		//String num = inNum.toString();
+		String num = ""+inNum;
 		System.out.println("#"+num+" | "+first+" "+last+" | "+email);
 	}
 	
@@ -128,11 +130,12 @@ public class SocialNetwork{
 		String first = inStud.getFirstName();
 		String last = inStud.getLastName();
 		String email = inStud.getEmail();
-		String idCoce = inNum.toString();
+		//String idCode = inNum.toString();
+		String idCode = ""+inNum;
 		Idea[] ideaLi=inStud.getIdeas();
-		System.out.printl(idCode + " | "+first+" "+last+ " | "  + email);
+		System.out.println(idCode + " | "+first+" "+last+ " | "  + email);
 		int kt=0;
-		while(kt<5 && ideaLi[kt]!=null){System.out.printl(ideaLi[kt]);}
+		while(kt<5 && ideaLi[kt]!=null){System.out.println(ideaLi[kt]);}
 	}
 	
 	
@@ -155,7 +158,8 @@ public class SocialNetwork{
 		while(getIdeaBool){
 			//asks for up to 5 ideas, after each, asks "want to add another idea?"
 			if(getIdeaBool){
-				newStud.addIdea();
+				String inputOfIdea = scanner.nextLine();
+				newStud.addIdea(inputOfIdea);
 			}
 			getIdeaBool = doubleCheck(" you want to add another idea");
 		}
@@ -166,18 +170,18 @@ public class SocialNetwork{
 	public int getNumber(int maxOpt){
 		//gets user to pick a number that is less than the maxOpt
 		Scanner scanner = new Scanner(System.in);
-		System.out.println("Pick a number less than "+Intiger.parseInt(maxOpt)+".");
+		System.out.println("Pick a number less than "+maxOpt+".");
 		int choice=-1;
 		while(true){
 			String inStr = scanner.nextLine();
-			try{choice = Intiger.parseInt(inStr);}
-         finally{
-   			if(choice>maxOpt){
-   				System.out.println("Chose a number larger than "+Intiger.parseInt(maxOpt)+".");
+			try{choice = Integer.parseInt(inStr);}
+			finally{
+				if(choice>maxOpt){
+					System.out.println("Chose a number larger than "+maxOpt+".");
+				}
+				else if(choice!=-1 && choice<maxOpt){return choice;}
    			}
-   			else if(choice!=-1 && choice<maxOpt){return choice;}
 		   }
-      }
 	}
 	
 	
@@ -269,8 +273,8 @@ public class SocialNetwork{
 		//getKeys, for each showUserBase(key)
 			//showUserBase - prints "userName | userEmail"
 		//admin and user can showUserInfo for further options
-		String[] allKeys = userhash.keySet();
-		Student[] allStuds = Student[allKeys.length()]
+		String[] allKeys = userHash.keySet();
+		Student[] allStuds = Student[allKeys.length()];
 		for(int y=0;y<allKeys.length();y++){
 			allStuds[y]=userHash.get(allKeys[y]);
 		}
