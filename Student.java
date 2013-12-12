@@ -68,12 +68,12 @@ class Student{
 	public Idea getIdea(int getNum){
 		return ideas.giveList()[getNum];
 	}
-	/*
+	
 	public Idea changeIdea(Idea oldIdea, String replaceIdea){  	 
 		Idea[oldIdea].editElement(replaceIdea);
 		Idea[oldIdea].resetRating();
 		//simply modifies and returns Idea, no dialogue
-		NEEDS DOING 
+		
 	}
 	
 	public void moveIdea(int pos1, int pos2){
@@ -81,7 +81,6 @@ class Student{
 		Idea[pos1] = Idea[pos2]; // put the pos2 idea into the pos1
 		temp = Idea[pos2]; // pos2 is filled by pos1
 		//will switch the two idea's positions in Student's Idea[]
-		 NEEDS DOING 
 	}
-	*/
+	
 }

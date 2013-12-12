@@ -3,7 +3,7 @@
 class IDNode{
 	protected Student owner;
 	protected int rating;
-	protected Idea.SLinked raterList; //user who already voted
+	protected SLinked raterList; //user who already voted
 	protected String idea;
 	
 	public void IDNode(Student ownIn, int ratIn, String ideaIn){
@@ -27,15 +27,19 @@ class IDNode{
 	public void setOwner(Student ownIn){
 		owner=ownIn;
 	}
-	/*
-	public void addRater(Student rater){
-		//add to list
-		// Needs Work
+	
+	public boolean addRater(Student rater){
+		//check and add to list
+		if(!checkRater(rater)){ //checkRater say "Yes, it isn't there", thus bash!
+			raterList.update(rater);
+			return true;
+		}
+		return false;
 	}
 	
 	public boolean checkRater(Student rater){
 		//check if in list 
-		// Needs Work 
+		return raterList.check(rater);
 	}
-	*/
+	
 }

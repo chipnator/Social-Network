@@ -5,50 +5,13 @@ public class Idea{
 	protected int rating;
 	protected SLinked voted;
 	protected String ideastr;
+	// Node & Singly Linked List
+	protected Singly singly;
+	protected SLinked sLinked;
+	
 
-	public class Singly{ // Nodes of a singly linked list of S's.
-		private Student element;
-		private Singly next;
-		public Singly(Student prs, Singly nextIn){ // Creates a node with the given element and the next node.
-			element = prs;
-			next = nextIn;
-		}
-
-		public Student getElement() { return element; } // returns the element of this node.
-
-		public Singly getNext() { return next; }
-
-		public void setElement(Student newElem) { element = newElem; }
-
-		public void setNext(Singly newNext) { next = newNext; }
-
-	}
-
-	// Singly linked list
-	public class SLinked{
-		protected Singly head;
-		protected int size;
-		public SLinked(){
-			head = null;
-			size = 0;
-		}
-		//update and search methods.
-		public void update(Student user){
-			Singly temp = new Singly(user, head.getNext());
-			head = temp;
-			size++;
-		}
-
-		public boolean check(Student user){
-			Singly pointer = head.getNext();
-			while(pointer.getNext()!=null){
-				if (pointer.getElement() == user){
-					return true;
-				}
-			}
-			return false;
-		}
-	}
+	
+	
 
 
 	public Idea(Student ownerIn, String ideaIn){ // constructor
@@ -97,10 +60,10 @@ public class Idea{
 			Scanner scan = new Scanner(System.in);
 			String curStr = scan.nextLine();
 			if (curStr.compareTo("s")==0){ //support
-				/*Finish*/
+				/*Needs Work*/
 			}
 			else if (curStr.compareTo("d")==0){ //disapprove
-				/*Finish*/
+				/*Needs Work*/
 			}
 			else if (curStr.compareTo("n")==0){
 				System.out.println("So you don't care about this idea... \n ...ok I guess. \n \n I kinda liked it but it's whatever...\n\n");
