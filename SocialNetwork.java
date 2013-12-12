@@ -13,6 +13,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.StringTokenizer;
+import java.lang.NumberFormatException;
 
 public class SocialNetwork{
 	protected HashTable userHash;
@@ -329,5 +330,16 @@ public class SocialNetwork{
 	}
 	*
 	*/
-
+   
+   public Student searchStudent(String studentName) {
+   	   return userHash.get(studentName);
+   }
+   
+   public boolean tryToGetNumber(String theStrIn){
+   	   boolean theRetBoolean = true;
+   	   try{Integer.parseInt(theStrIn);}
+   	   catch(NumberFormatException e){return theRetBoolean;}
+   	   return theRetBoolean;
+   }
+             
 }

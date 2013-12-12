@@ -77,5 +77,6 @@ class Student{
 		temp = theArray[pos2]; // pos2 is filled by pos1
 		//will switch the two idea's positions in Student's Idea[]
 	}
+  
 	
 }

@@ -41,14 +41,14 @@ public class IDNetBrowser {
 		String inStr = "";
 		
 		// introduction to program printed just before user interaction
-		System.out.println("Welcome to the Idea Network Browser!");
-		System.out.println("A request for information can be rendered via the phrase: \"info\"");
+		System.out.println("Welcome to the Idea Network Browser! \n");
+		System.out.println("A request for information can be rendered via the phrase: \"info\" \n");
 		//MAIN LOOP: a while loop to perform user interaction
 		while(running) {
 			//checks that a user is logged in
 			while(login==false && quitting == false){
-				System.out.print("You are not currently logged in");
-				System.out.print("Enter User Name or type \"new\" to make a new user :");
+				System.out.print("You are not currently logged in \n");
+				System.out.print("Enter User Name or type \"new\" to make a new user :\n ");
 				inStr = scanner.nextLine();
 				if (inStr.compareTo("quit")==0) {
 					running = false; // this will terminate running
@@ -69,7 +69,22 @@ public class IDNetBrowser {
 					//enter student's id to log in
 					//find Student associated with that key value
 					//Set that student to user
-					/* NEEDS DOING */
+					boolean loginRunning = true;
+					while(loginRunning){
+						System.out.println("Type your email address to locate your login \n");
+						inStr=scanner.nextLine();
+						user = theNet.searchStudent(inStr);
+						if(user==null){
+							System.out.println("You entered an invalid user name, try again.");
+							login=false;
+						}
+						else if(inStr.compareTo("cancel")==0 || inStr.compareTo("exit")==0){loginRunning=false;}
+						else{
+							System.out.println("You logged in");
+							login=true;
+							loginRunning=false;
+						}
+					}
 				}
 				else if(inStr.compareTo("new")==0){
 					//dialogue for student to create account
@@ -77,7 +92,7 @@ public class IDNetBrowser {
 					/* NEEDS DOING */
 				}
 				else {
-					System.out.print("Try to enter you User Name again:");
+					System.out.print("Try to enter you User Name again:\n");
 					inStr = scanner.nextLine();
 				}
 			}
