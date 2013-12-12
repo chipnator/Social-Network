@@ -69,17 +69,12 @@ class Student{
 		return ideas.giveList()[getNum];
 	}
 	
-	public Idea changeIdea(Idea oldIdea, String replaceIdea){  	 
-		Idea[oldIdea].editElement(replaceIdea);
-		Idea[oldIdea].resetRating();
-		//simply modifies and returns Idea, no dialogue
-		
-	}
-	
 	public void moveIdea(int pos1, int pos2){
-		Idea temp = Idea[pos1]; // need to create a temporary holder for the pos1 idea *** probably not the way we create an idea
-		Idea[pos1] = Idea[pos2]; // put the pos2 idea into the pos1
-		temp = Idea[pos2]; // pos2 is filled by pos1
+		Idea[] theArray=getIdeas();
+		Idea temp = theArray[pos1]; // need to create a temporary holder for the pos1 idea
+		//**** probably not the way we create an idea
+		theArray[pos1] = theArray[pos2]; // put the pos2 idea into the pos1
+		temp = theArray[pos2]; // pos2 is filled by pos1
 		//will switch the two idea's positions in Student's Idea[]
 	}
 	

@@ -32,8 +32,17 @@ public class Idea{
 		}
 	}
 	
+	public void changeIdea(String replaceIdea){  	 
+		setIdea(replaceIdea);
+		resetRating();
+		//simply modifies idea
+		
+	}
+	
 	// get set for rating, users who already voted, idea string.
 	// iterate up, down for rating.
+	public void resetRating(){rating=0;}
+	
 	public int getRating(){ return rating; }
 
 	public int upRating(){ return rating++; }
@@ -41,6 +50,8 @@ public class Idea{
 	public int downRating(){ return rating--; }
 
 	public String getIdea(){ return ideastr; }
+	
+	public void setIdea(String theInIdea){ ideastr = theInIdea; }
 
 	public Student getOwner(){ return owner; }
 
