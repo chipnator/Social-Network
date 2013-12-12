@@ -40,29 +40,29 @@ public class SocialNetwork{
 			//created scanner object to take in data file
 			//Scanner dataIn = new Scanner(file);
 			//
-			String[] fileAr = new String[1];
-			fileAr[0]=fileName;
-			//File file = new FileReader(fileName);
-			Scanner dataIn = new Scanner(new FileReader(fileAr[0]));
+
+			Scanner dataIn = new Scanner(new FileReader(fileName));
 			//How to get next line: dataIn.nextLine()
 			
-			int fileCount = 0;
-			String line1 = " ";
-			String line2 = " ";
-			while(line1!=null && line2!=null){
+			String line;
+         while(dataIn.hasNextLine()) {
+            
 				String first = dataIn.nextLine();
 				String last = dataIn.nextLine();
 				String email = dataIn.nextLine();
-				Student newStud = new Student(first,last,email); //creates new student
+            
+            System.out.println(first);
+				
+            Student newStud = new Student(first,last,email); //creates new student
 				userHash.put(newStud.getID(),newStud); //adds newStud to hash
-				line1 = dataIn.nextLine();
-				line2 = dataIn.nextLine();
-				while(line1.compareTo("\n")!=0 && line2.compareTo("\n")!=0 ){
-					newStud.addIdea(line1);
-					line1 = line2;
-					line2 = dataIn.nextLine();
+				
+            line = dataIn.nextLine().trim();
+            while (!line.equals("") && dataIn.hasNextLine()) {
+					newStud.addIdea(line);
+					line = dataIn.nextLine();
+               System.out.println("one idea done");
 				}
-				fileCount++;
+				//fileCount++;
 			}
 		}
 		catch(FileNotFoundException e){ 

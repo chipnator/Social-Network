@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.StringTokenizer;
 
 public class Idea{
 	protected Student owner;
@@ -19,16 +20,23 @@ public class Idea{
 		int rating = 0;
 		System.out.println(ideaIn);
 		try{
+         /*
 			int p=0;
 			for(int i=0;i<ideaIn.length();i++){
 				if(ideaIn.substring(i,i+1).compareTo("|")==0){i=p;}
 			}
 			String thisThing = ideaIn.substring(0,p).trim();
 			rating=Integer.parseInt(thisThing);
+         */
+         StringTokenizer tok = new StringTokenizer(ideaIn, "|");
+         String thisThing = tok.nextToken().trim();
+         rating=Integer.parseInt(thisThing);
+         String desc = tok.nextToken().trim();
+         ideastr = desc;         
 		}
 		finally{
 			SLinked voted = new SLinked();
-			ideastr = ideaIn;
+			//ideastr = ideaIn;
 		}
 	}
 	

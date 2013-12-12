@@ -13,7 +13,7 @@ class Student{
 		firstName=firstNameIn; 
 		lastName=lastNameIn;
 		email=emailIn;
-		Idealist ideas = new Idealist();
+		ideas = new Idealist();
 		resetID();
 	}
 
