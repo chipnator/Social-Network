@@ -6,8 +6,7 @@ class Student{
 	protected String email;
 	protected String id;    
 	protected Idealist ideas; //Idealist
-
-	//public Student[](length) //constructor for Student[]
+	//protected IdeaHN ideaHeap;
 	
 	public Student(String firstNameIn, String lastNameIn, String emailIn){ 
 		firstName=firstNameIn; 
@@ -23,6 +22,10 @@ class Student{
 	
 	public String getLastName(){ 
 		return lastName; 
+	}
+	
+	public String getFullName(){ 
+		return firstName+" "+lastName; 
 	}
 	
 	public String getEmail(){ 
@@ -57,6 +60,13 @@ class Student{
 		ideas.addIdea(newIdea);
 	}
 	
+	public Idea addIdeaAndReturn(String inIdea){
+		Idea newIdea = new Idea(this, inIdea);
+		//ideas.addIdea(newIdea);
+		ideas.insert(newIdea);
+		return newIdea;
+	}
+	
 	public Idea[] getIdeas(){
 		return ideas.giveList();
 	}
@@ -65,8 +75,9 @@ class Student{
 		return ideas;
 	}
 	
-	public Idea getIdea(int getNum){
-		return ideas.giveList()[getNum];
+	public Idea getIdea(int getIndexNum){ 
+		//return the student's idea from their Idealist at index getNum
+		return ideas.giveList()[getIndexNum];
 	}
 	
 	public void moveIdea(int pos1, int pos2){

@@ -11,12 +11,19 @@ class HeapNode{
 	protected Idea idea; 
 	protected Student author;          
 
-	public void Node(int newKey, Idea insertIdea, Student newAuthor){ 
+	public HeapNode(int newKey, Idea insertIdea, Student newAuthor){ 
 		key = newKey;
 		idea = insertIdea;
 		author = newAuthor;
 	}
 
+	public HeapNode(Idea insertIdea){
+		
+		key = insertIdea.getRating();
+		idea = insertIdea;
+		author = insertIdea.getOwner();
+	}
+	
 	public int getKey(){ 
 		return key; 
 	}

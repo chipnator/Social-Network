@@ -9,43 +9,51 @@ public class Idea{
 	// Node & Singly Linked List
 	protected Singly singly;
 	protected SLinked sLinked;
+	protected HeapNode heapNode;
+	//protected IdeaHN ideaHeap; //really should not need
 	
-
-	
-	
-
-
-	public Idea(Student ownerIn, String ideaIn){ // constructor
+	//public Idea(Student ownerIn, String ideaIn, IdeaHN inIdHeap){ // old constructor
+	public Idea(Student ownerIn, String ideaIn){ // new constructor
 		owner = ownerIn;
-		int rating = 0;
-		System.out.println(ideaIn);
-		try{
-         /*
-			int p=0;
-			for(int i=0;i<ideaIn.length();i++){
-				if(ideaIn.substring(i,i+1).compareTo("|")==0){i=p;}
-			}
-			String thisThing = ideaIn.substring(0,p).trim();
-			rating=Integer.parseInt(thisThing);
-         */
-         StringTokenizer tok = new StringTokenizer(ideaIn, "|");
-         String thisThing = tok.nextToken().trim();
-         rating=Integer.parseInt(thisThing);
-         String desc = tok.nextToken().trim();
-         ideastr = desc;         
-		}
-		finally{
-			SLinked voted = new SLinked();
-			//ideastr = ideaIn;
-		}
+		//ideaHeap = inIdHeap;
+		rating = 0;
+		//System.out.println(ideaIn);
+		//heapNode=heapIn;		
+		StringTokenizer tok = new StringTokenizer(ideaIn, "|");
+		String thisThing = tok.nextToken().trim();
+		//System.out.println(thisThing);
+		rating=Integer.parseInt(thisThing);
+		//System.out.println(rating);
+		String desc = tok.nextToken().trim();
+		ideastr = desc;
+		SLinked voted = new SLinked();
+		showIdea();
 	}
 	
-	public void changeIdea(String replaceIdea){  	 
+	//changeIdea
+	public void changeIdea(String replaceIdea){  
+		//simply modifies idea
 		setIdea(replaceIdea);
 		resetRating();
-		//simply modifies idea
-		
 	}
+	
+	//showIdea
+	public void showIdea(){
+		//prints out the Idea
+		System.out.println(rating+" | "+ideastr+" | "+owner.getFullName());
+	}
+	
+	//showNumberedIdea
+	public void showNumberedIdea(int numbered){
+		//prints out the Idea
+		System.out.println("#"+numbered+" | "+rating+" | "+ideastr+" | "+owner.getFullName());
+	}
+	
+	// Heap get/set --> removing Heap access because it doesn't make sense
+	//
+	// public void setHeap(HeapNode heapIn){ heapNode=heapIn; }
+	// public HeapNode getHeap(){ return heapNode; }
+	
 	
 	// get set for rating, users who already voted, idea string.
 	// iterate up, down for rating.
@@ -56,11 +64,15 @@ public class Idea{
 	public int upRating(){ return rating++; }
 
 	public int downRating(){ return rating--; }
-
+	
+	
+	// Idea get/set
 	public String getIdea(){ return ideastr; }
 	
 	public void setIdea(String theInIdea){ ideastr = theInIdea; }
 
+	
+	// Owner get & Voter get/set
 	public Student getOwner(){ return owner; }
 
 	public void setRating(int inInt){ rating = inInt; }
@@ -69,8 +81,9 @@ public class Idea{
 
 	public boolean checkVoter(Student voter){ return voted.check(voter); }
 	
+	
 	//method that one calls to vote
-	public void vote(boolean upOrDown, Student voter){
+	public void vote(Student voter){
 		System.out.println("Idea: "+ideastr);
 		System.out.println("Do you \"s\"upport this idea, \"d\"isapprove of this idea");
 		System.out.println("or do you \"n\"ot care about this idea?");
@@ -78,11 +91,21 @@ public class Idea{
 		while (run == true){
 			Scanner scan = new Scanner(System.in);
 			String curStr = scan.nextLine();
-			if (curStr.compareTo("s")==0){ //support
-				/*Needs Work*/
-			}
-			else if (curStr.compareTo("d")==0){ //disapprove
-				/*Needs Work*/
+			if (curStr.compareTo("s")==0 || curStr.compareTo("d")==0){ //support
+				if(!checkVoter(voter) && voter!=null && curStr.compareTo("s")==0){ //checkVoter says, "yes, voter is in list"
+					upRating();
+					addVoter(voter);
+				}
+				else if(!checkVoter(voter) && voter!=null && curStr.compareTo("d")==0){ //checkVoter says, "yes, voter is in list"
+					downRating();
+					addVoter(voter);
+				}
+				else if(voter==null){System.out.println("Silly admin, voting is for students!");}
+				else if(checkVoter(voter)){System.out.println("Students can't vote twice on an idea!");}
+				else{
+					System.out.println("Sorry, vote denied!");
+				}
+				run=false;
 			}
 			else if (curStr.compareTo("n")==0){
 				System.out.println("So you don't care about this idea... \n ...ok I guess. \n \n I kinda liked it but it's whatever...\n\n");

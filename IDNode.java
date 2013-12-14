@@ -1,15 +1,20 @@
 //IDNode.java
+//IDNode is the node of 
+//ummmm... well this is interesting... this didn't get used at all
+//I think that Idea replaced this... how did this happen???
 
 class IDNode{
 	protected Student owner;
 	protected int rating;
 	protected SLinked raterList; //user who already voted
 	protected String idea;
+	protected HeapNode heapNode;
 	
-	public void IDNode(Student ownIn, int ratIn, String ideaIn){
+	public void IDNode(Student ownIn, int ratIn, String ideaIn, HeapNode heapIn){
 		owner=ownIn;
 		rating=ratIn;
 		idea=ideaIn;
+		heapNode=heapIn;
 	}
 	
 	public int getRating(){

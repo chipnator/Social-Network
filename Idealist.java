@@ -4,14 +4,18 @@
 // 9/27/13
 
 public class Idealist{ //Sets up the class 
-	private Idea[] array; 
-	private int nElements;
+	protected Idea[] array; 
+	protected int nElements;
 	
 	public Idealist(){ //Constructor. Initializes array variable with given nElements.
 		array = new Idea[5];
 		nElements = 0;
-	}		
+	}
 	
+	public boolean hasRoom(){
+		return (nElements<5);
+	}
+		
 	public void insert(Idea value){ // Inserts given value in the array (at the first available empty spot)
 		array[nElements] = value;
 		nElements++;
@@ -38,13 +42,13 @@ public class Idealist{ //Sets up the class
 	}
 
 	public void addIdea(Idea inIdea){
-		for (int t=0; t<5; t++){
-			if (array[t]!=null){
-				array[t]=inIdea;
-				return;
-			}
+		if(array[nElements]!=null){
+			array[nElements]=inIdea;
+			nElements++;
 		}
-		System.out.println("Unable to add Idea. Idealist is full.");
+		else{
+			System.out.println("Unable to add Idea. Idealist is full.");
+		}
 	}
 	
 	public Idea[] giveList(){ //RETURNS idea array

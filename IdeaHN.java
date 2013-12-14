@@ -8,17 +8,19 @@
 
 public class IdeaHN {
 
-	private HeapNode[] myArray;
-	private HeapNode root;
-	private HeapNode rootPointer;
-	private HeapNode lastItem;
-	private int currentSize;
+	protected HeapNode[] myArray;
+	//protected HeapNode root;
+	//protected HeapNode rootPointer;
+	//protected HeapNode lastItem;
+	protected int currentSize;
+	//protected Student student;
+	
 	
 	public IdeaHN(){
-		myArray = new HeapNode[100];
+		myArray = new HeapNode[101];
 		currentSize = 0;
-		rootPointer = myArray[0];
-		lastItem = myArray[0];
+		//rootPointer = myArray[0];
+		//lastItem = myArray[0];
 		//Student root = null; // Student is null to start
 	}
 	
@@ -26,27 +28,40 @@ public class IdeaHN {
 		return currentSize==0;
 	}
 	
-	//public void insert(String value, int score, Student author){
 	public void insert(HeapNode newIdea){
 		
-		//newIdea = myArray[currentSize + 1];
-		myArray[currentSize++] = newIdea;
-		
-		// sort the array to make sure its in order
+		// newIdea = myArray[currentSize + 1];
+		myArray[++currentSize] = newIdea;
 		//currentSize++;
 		
-		if (currentSize == myArray.length){
+		// sort the array to make sure its in order
+		upHeap(currentSize);
+		
+		// expand if Heap's Array is full
+		/*if (currentSize == myArray.length){
 			HeapNode[] temp = new HeapNode[myArray.length * 2];
 			for (int i = 0; i < currentSize; i++){
 				temp[i] = myArray[i];
 			}
 			myArray = temp;
-		}		
+		}*/		
 	}
 	
-	public HeapNode removeMax() {
-		HeapNode temp = myArray[1];
-		myArray[1] = null;
+	
+	
+	public HeapNode removeMax() { 
+		
+		if (currentSize==0)
+			return null;
+		
+		HeapNode temp = myArray[1]; //Why is it creating an array where size=1?
+		//myArray[1] = null; //Why is it setting a non-existant array spot to null?
+		myArray[1] = myArray[currentSize];
+		myArray[currentSize] = null;
+		currentSize--;
+		downHeap(1);
+		return temp;
+		/*
 		if (isEmpty()){
 			System.out.println("There are no idea's in the heap.");
 			return null;
@@ -55,17 +70,18 @@ public class IdeaHN {
 			int i = 0;
 			// checks each element to the others to find the max element
 			while(i < currentSize){
-				if (temp.key > rootPointer.key) {
-					rootPointer = temp;
-				}
+				//if (temp.key > rootPointer.key) {
+				//	rootPointer = temp;
+				//}
 				i++;
 			}
 			return temp;
-		}
+		}*/
+		
 	}
 	
-	public HeapNode returnList(){
-		HeapNode printList = myArray[1];
+	public Idea[] returnListOfIdeas(){
+		Idea[] listToReturn = new Idea[currentSize];
 		if (isEmpty()){
 			System.out.println("There are no idea's in the heap.");
 			return null;
@@ -73,42 +89,56 @@ public class IdeaHN {
 		else{
 			int i = 0;
 			while(i < currentSize){
-				removeMax();	
+				listToReturn[i]=removeMax().returnIdea();	
 				i++;
 			}
-			return printList;	
+			return listToReturn;
 		}
 	}
 	
-	public void upHeap(int index){
-		int parent = (index - 1) / 2;
-		HeapNode bottom = myArray[index];
-		while (index > 0 && myArray[parent].getKey() < bottom.getKey()){
+	public void upHeap(int index){ //what is the index? 
+		int parent = (index) / 2;
+		if (parent ==0){return;}
+		//HeapNode bottom = myArray[index];
+		/*
+		while (myArray[parent].getKey() < bottom.getKey()){
 			myArray[index] = myArray[parent];  
 			index = parent;
-			parent = (parent - 1) / 2;
+			parent = (parent) / 2;
 		}  
 		myArray[index] = bottom;
+		*/
+		
+		
+		// james
+		if (myArray[parent].getKey() < myArray[index].getKey()){
+			HeapNode tNode = myArray[index];
+			myArray[index] = myArray[parent];
+			myArray[parent] = tNode;
+			index = parent;
+			upHeap(index);
+		}
 	}
 
-	public void downHeap(int index){
-		int largerChild;
-		HeapNode top = myArray[index];   
-		while(index < currentSize / 2){                               
-			int leftChild = 2*index+1;
-			int rightChild = leftChild+1;                            
-			if(rightChild < currentSize && myArray[leftChild].getKey() < myArray[rightChild].getKey()){
-				largerChild = rightChild;
-			}
-			else{
-				largerChild = leftChild;
-			}
-			
-			if( top.getKey() >= myArray[largerChild].getKey()){
-				myArray[index] = myArray[largerChild];
-				index = largerChild; 
-				myArray[index] = top;
-			}      
+	public void downHeap(int index){ //what is the index?
+		int left = index*2;
+		int right = index*2+1;
+		if (left > currentSize || right > currentSize)
+			return;
+		
+		// find which is large (left or right)
+		int max = right;
+		if(myArray[left].getKey() > myArray[right].getKey()){
+			//HeapNode curHeap=myArray[left].getKey();
+			max = left;
+		}
+		//else{curHeap=myArray[right].getKey()}
+		if (myArray[max].getKey() > myArray[index].getKey()){
+			HeapNode tempNode = myArray[index];
+			myArray[index] = myArray[max];
+			myArray[max] = tempNode;
+			//index = curHeap;
+			downHeap(max);
 		}
 	}
 

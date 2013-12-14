@@ -42,7 +42,7 @@ public class HashTable {
 		int avail= -1;
 		if(key==null){
 			System.out.println("Invalid entry");
-			return null;
+			return avail;
 		}
 		else{
 			int i=hashValue(key);
@@ -113,20 +113,6 @@ public class HashTable {
 		numEnt--;	//decreasing size
 		return toReturn;
 	}
-	
-	
-	/*public String[] returnListKeys(){
-		//returns list of keys
-		// NEEDS DOING 
-	}
-	*/
-	
-	
-	/*public Student[] returnListValues(Student value){
-		//returns list of values
-		/* NEEDS DOING 
-	}
-	*/
 	
 	//hashSize gives the size of the hash
 	//Returns the number of entries in the hash table
