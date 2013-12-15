@@ -36,7 +36,7 @@ class HeapNode{
 		// key--;
 	}
 	
-	public void upvote(){
+	public void upVote(){
 		setKey(key++);
 		// key++;
 	}
@@ -44,6 +44,11 @@ class HeapNode{
 		return idea;
 	}
 
+	public void showNode(){
+		System.out.println("Top Idea: "+idea.getIdea());
+		System.out.println("Top Idea Has "+idea.getRating()+" Votes!");
+		System.out.println("Top Idea thought of by "+author.getFullName());
+	}
 	
 }
 

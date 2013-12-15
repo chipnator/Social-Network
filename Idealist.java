@@ -10,6 +10,10 @@ public class Idealist{ //Sets up the class
 	public Idealist(){ //Constructor. Initializes array variable with given nElements.
 		array = new Idea[5];
 		nElements = 0;
+		for(int du=0;du<5;du++){
+			Student noStud = new Student("NoEmail");
+			array[du] = new Idea(noStud,"0 | no awarded idea");
+		}
 	}
 	
 	public boolean hasRoom(){
@@ -40,9 +44,9 @@ public class Idealist{ //Sets up the class
 		}
 		System.out.println("");
 	}
-
+	
 	public void addIdea(Idea inIdea){
-		if(array[nElements]!=null){
+		if(nElements<5){
 			array[nElements]=inIdea;
 			nElements++;
 		}

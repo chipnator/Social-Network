@@ -233,6 +233,7 @@ public class SocialNetwork{
 				if(doubleCheck(" you want to log out")){
 					login=false;
 					admin=false; //resets admin status
+					user = null;
 					System.out.println("Logging out... \n... \n... \n... \nLogged Out!");
 				}
 				else{
@@ -251,17 +252,13 @@ public class SocialNetwork{
 			//add idea if logged in as student
 			
 			
-			//showTopIdeas - loop with options for user and admin
+			//showTopIdea - loop with options for user and admin
 			else if (inStr.compareTo("STI")==0){
-				//asks for number of ideas to show first
-				//takes from priority queue
-				//admin can award (removes idea from student, adds to awarded)
-				//User can vote on ideas, iterates votes +1/-1
-				System.out.println("How many ideas should be shown?");
-				/* int totalIdeas =  NEEDS WORK */ //gets total number of ideas
-				//int showNum = getNumber(totalIdeas); //gets number of ideas	
+				//shows the top idea
+				ideaHeap.returnMax().showNode();
 			}
 			
+			/*
 			//showAllIdeas
 			else if (inStr.compareTo("SAI")==0){
 				//accesses priority queue of Ideas and prints in reverse numberical order
@@ -276,11 +273,13 @@ public class SocialNetwork{
 					
 					allTheIdeas[ide].showNumberedIdea(ide);
 				}
+				
 				if(admin){System.out.println("Admin Commands: \"award\" to award an idea");}
 				if(!admin){System.out.println("User Commands: type a number to select an idea to vote on, type cancel to exit");}
 				//put single while loop here that performs all of the above
-				/* NEEDS WORK */
+				 NEEDS WORK 
 			}
+			*/
 			
 			
 			//showAllData - loop with options for user and admin
@@ -288,19 +287,18 @@ public class SocialNetwork{
 				//student can vote on ideas
 				//admin can remove user or change user's info
 				
-				Student[] allUsers = showReturnAllData();
-				int theSize = allUsers.length;
-				Student inStudd = getStudentFromList(allUsers);
 				if(!admin){System.out.println("As user, one may \"vote\" on a specific user's info, referenced by number");}
 				if(admin){System.out.println("As Admin, one may \"remove\" or \"change\" the user's info, referenced by number");}
+				
+				Student[] allUsers = showReturnAllData();
+				int theSize = allUsers.length;
+				Student inStudd = getStudentFromListByNum(allUsers);
 				String curStr = scanner.nextLine();
-				while(curStr.compareTo("exit")!=0 || curStr.compareTo("cancel")!=0){
-					if(admin){System.out.println("Admin Commands: \"remove\" to remove user, \"change\" to change user");}
-					if(!admin){System.out.println("User Commands: type a number to select a user & vote on their ideas, type cancel to exit");}
-					if(curStr.compareTo("remove")==0 && admin){
-						//remove interface
-						int toRemove = getNumber(theSize);
-						/* NEEDS DOING */
+				boolean beerRun=true;
+				while(beerRun){
+					System.out.println("Admin: exit ot change | User: vote");
+					if(curStr.compareTo("exit")!=0 || curStr.compareTo("cancel")!=0){
+						beerRun=false;
 					}
 					else if(curStr.compareTo("change")==0 && admin){
 						//change interface
@@ -315,7 +313,10 @@ public class SocialNetwork{
 						System.out.println("Choose an idea to vote on:");
 						int studIdeaNum = getNumber(theSize);
 						Idea chosen = voteOn.getIdeas()[studIdeaNum];
-						if(chosen!=null){chosen.vote(user);}
+						if(chosen!=null){
+							chosen.vote(user);
+							beerRun=false;
+						}
 					}
 					else{
 						System.out.println("Remember you can exit by typing exit or cancel");
@@ -324,7 +325,51 @@ public class SocialNetwork{
 				}	
 				
 			}
+			
+			//award - loop with options for user and admin
+			else if (inStr.compareTo("award")==0 && admin) {
+				//student can vote on ideas
+				//admin can remove user or change user's info
+				boolean rumRunner=true;
+				String curStr="";
+				System.out.println("As Admin, one may award a user's idea, referenced by number;");
+				System.out.println("awarding an idea will remove it from the student's idea list.");
+				Idea[] allIdeas = ideaHeap.returnListOfIdeas();
+				for(int ai=0;ai<allIdeas.length;ai++){
+					if(allIdeas[ai]==null){System.out.println("Idea "+ai+" is blank.");}
+					else{allIdeas[ai].showNumberedIdea(ai);}
+				}				
+				System.out.println("Choose a number: ");
+				int ideaChosen = getNumber(allIdeas.length);
 				
+				while(rumRunner){
+					System.out.println("\"award\" or \"exit\"? ");
+					curStr = scanner.nextLine();
+					if(curStr.compareTo("award")==0 && admin){
+						//award
+						Idea temp = allIdeas[ideaChosen];
+						if(temp!=null){
+							temp.getOwner().getIdealist().remove(temp);
+							int position = ideaHeap.getPosOfIdea(temp);
+							if(position!=-1){
+								System.out.println("Removing "+position+"!");
+								ideaHeap.remove(position);
+								rumRunner=false;
+							}
+							else{System.out.println("Failed to remove after removing from the owner's array");}
+						}
+						else{System.out.println("Failed to remove");}
+					}
+					else if(curStr.compareTo("exit")!=0 || curStr.compareTo("cancel")!=0){
+						rumRunner=false;
+					}
+					else{
+						System.out.println("Remember you can exit by typing exit or cancel");
+						curStr = scanner.nextLine();
+					}
+				}	
+				
+			}
 			
 			//changeUserInfo for Admin
 			else if (inStr.compareTo("CUI")==0 && admin){
@@ -422,6 +467,8 @@ public class SocialNetwork{
 		}
 		*/
 		for(int hi=0;hi<10;hi++){
+			//int hit=hi+1;
+			//System.out.println(hit+" | "+awOut[hi].getIdea());
 			System.out.println(hi+" | "+awOut[hi].getIdea());
 		}
 		return awOut;
@@ -445,7 +492,7 @@ public class SocialNetwork{
 	public Student[] showReturnAllData(){
 		System.out.println("All users in database");
 		Student[] allUsers = showAllUsers();
-		for(int cat=0;cat<allUsers.length;cat++){
+		for(int cat=0;cat<allUsers.length && allUsers!=null;cat++){
 			showUserInfo(allUsers[cat],cat);
 		}
 		return allUsers;
@@ -485,7 +532,6 @@ public class SocialNetwork{
 		String first = inStud.getFirstName();
 		String last = inStud.getLastName();
 		String email = inStud.getEmail();
-		//String num = inNum.toString();
 		String num = ""+inNum;
 		System.out.println("#"+num+" | "+first+" "+last+" | "+email);
 	}
@@ -500,7 +546,11 @@ public class SocialNetwork{
 		Idea[] ideaLi=inStud.getIdeas();
 		System.out.println(inNum + " | "+first+" "+last+ " | "  + email);
 		int kt=0;
-		while(kt<5 && ideaLi[kt]!=null){System.out.println(" ~~~ "+ideaLi[kt]);}
+		while(kt<5 && ideaLi[kt]!=null){
+			System.out.print(" ~~~ ");
+			ideaLi[kt].showIdea();
+			kt++;
+		}
 	}
 	
 	
@@ -578,18 +628,19 @@ public class SocialNetwork{
 	public int getNumber(int maxOpt){
 		//gets user to pick a number that is less than the maxOpt
 		//Scanner scanner = new Scanner(System.in);
+		Scanner scanner42 = new Scanner(System.in);
 		System.out.println("Pick a number less than "+maxOpt+".");
 		int choice=-1;
-		String inStr="";
+		String inStr = scanner42.nextLine();
 		while(true){
-			inStr = scanner.nextLine();
 			try{choice = Integer.parseInt(inStr);}
 			finally{
 				if(choice>maxOpt){
-					System.out.println("Chose a number larger than "+maxOpt+".");
+					System.out.println("Choose a number larger than "+maxOpt+".");
 				}
 				else if(choice>-1 && choice<maxOpt){return choice;}
    			}
+   			inStr = scanner42.nextLine();
 		   }
 	}
 	
@@ -698,8 +749,9 @@ public class SocialNetwork{
 		//admin and user can showUserInfo for further options
 		String[] allKeys = userHash.keySet();
 		Student[] allStuds = new Student[allKeys.length];
-		for(int y=0;y<allKeys.length;y++){
-			allStuds[y]=userHash.get(allKeys[y]);
+		for(int y=0;y<allKeys.length && allKeys[y]!=null;y++){
+			Student theSut=userHash.get(allKeys[y]);
+			allStuds[y]=theSut;
 			showUserInfo(allStuds[y], y);
 		}
 		return allStuds;
@@ -719,7 +771,8 @@ public class SocialNetwork{
 	*/
 	
 	public Student getStudentFromList(Student[] inStudList){
-		Student[] listStuds = showAllUsers();
+		Scanner scanner = new Scanner(System.in);
+		//Student[] listStuds = showAllUsers();
 		Student studentRetuObj=null;
 		boolean gSFLRunning = true;
 		String inStr="";
@@ -727,8 +780,35 @@ public class SocialNetwork{
 			System.out.println("Type email address to access user, \ncommands \"cancel\" and \"exit\" function as such \n");
 			inStr=scanner.nextLine();
 			studentRetuObj = userHash.get(inStr);
-			if(user==null){
+			if(studentRetuObj==null){
 				System.out.println("You entered an invalid user name, try again. \n");
+			}
+			else if(inStr.compareTo("cancel")==0 || inStr.compareTo("exit")==0){
+				System.out.println("Cancelled \n");
+				gSFLRunning=false;
+				//returns null
+			}
+			else{
+				System.out.println("You accessed user "+studentRetuObj.getFullName()+"\n");
+				gSFLRunning=false;
+			}
+		}
+		return studentRetuObj;
+	}
+	
+	public Student getStudentFromListByNum(Student[] inStudList){
+		Scanner scanner = new Scanner(System.in);
+		//Student[] listStuds = showAllUsers();
+		Student studentRetuObj=null;
+		boolean gSFLRunning = true;
+		String inStr="";
+		while(gSFLRunning){
+			System.out.println("Type number of student in list \n");
+			inStr=scanner.nextLine();
+			int inInt=getNumber(inStudList.length);
+			studentRetuObj = inStudList[inInt];
+			if(studentRetuObj==null){
+				System.out.println("You entered an invalid user number, try again. \n");
 			}
 			else if(inStr.compareTo("cancel")==0 || inStr.compareTo("exit")==0){
 				System.out.println("Cancelled \n");

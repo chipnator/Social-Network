@@ -25,10 +25,12 @@ public class HashTable {
 	
 	//Returns the obect array that contains all keys
 	public String[] keySet() {
-		String[] keys = new String[capacity];   //creates new key
+		int keepTrack=0;
+		String[] keys = new String[numEnt];   //creates new key
 		for(int i=0; i<capacity; i++) {
 			if((userStorage[i]!=null)){
-				keys[i]=userStorage[i].getKey();   //checks every key mapped into hash table and takes key and puts into array
+				keys[keepTrack++]=userStorage[i].getKey();
+				//checks every key mapped into hash table and takes key and puts into array
 			}
 		}
 		return keys;
@@ -68,7 +70,7 @@ public class HashTable {
 	
 	public boolean checkForKey(String key){
 		//Checks if key is there, returns boolean
-		return key!=null;
+		return findEntry(key)>=0;
 	}
 	
 	/*Returns the value associated with a key*/

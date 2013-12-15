@@ -15,6 +15,12 @@ class Student{
 		ideas = new Idealist();
 		resetID();
 	}
+	public Student(String emailIn){ 
+		firstName="dummy";
+		lastName="student";
+		email=emailIn;
+		resetID();
+	}
 
 	public String getFirstName(){ 
 		return firstName; 
@@ -77,7 +83,8 @@ class Student{
 	
 	public Idea getIdea(int getIndexNum){ 
 		//return the student's idea from their Idealist at index getNum
-		return ideas.giveList()[getIndexNum];
+		Idea[] inList = ideas.giveList();
+		return inList[getIndexNum];
 	}
 	
 	public void moveIdea(int pos1, int pos2){

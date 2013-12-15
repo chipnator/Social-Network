@@ -38,7 +38,11 @@ public class IdeaHN {
 		upHeap(currentSize);
 		
 		// expand if Heap's Array is full
-		/*if (currentSize == myArray.length){
+		/*
+		
+		// Add back In if stuff is working
+		
+		if (currentSize == myArray.length){
 			HeapNode[] temp = new HeapNode[myArray.length * 2];
 			for (int i = 0; i < currentSize; i++){
 				temp[i] = myArray[i];
@@ -80,7 +84,37 @@ public class IdeaHN {
 		
 	}
 	
+	public HeapNode remove(int position) { 
+		//not proper heap implimentation of heap, but it works in this case
+		//Don't genereally remove from middle of heap
+		if (currentSize==0)
+			return null;
+		
+		HeapNode temp = myArray[position]; 
+		myArray[position] = myArray[currentSize];
+		myArray[currentSize] = null;
+		currentSize--;
+		downHeap(position);
+		return temp;
+		
+	}
+	
+	public HeapNode returnMax() { 
+		
+		if (currentSize==0)
+			return null;
+		
+		HeapNode temp = myArray[1]; //Why is it creating an array where size=1?
+		//myArray[1] = null; //Why is it setting a non-existant array spot to null?
+		return temp;
+		
+	}
+	
 	public Idea[] returnListOfIdeas(){
+		//IdeaHN tempHeap = this;
+
+		HeapNode[] tempHeapNodes = new HeapNode[101];
+		
 		Idea[] listToReturn = new Idea[currentSize];
 		if (isEmpty()){
 			System.out.println("There are no idea's in the heap.");
@@ -88,10 +122,18 @@ public class IdeaHN {
 		}
 		else{
 			int i = 0;
-			while(i < currentSize){
-				listToReturn[i]=removeMax().returnIdea();	
+			int tempCur = currentSize;
+			while(currentSize>0){
+				tempHeapNodes[i] = removeMax();
+				listToReturn[i]=tempHeapNodes[i].returnIdea();	
 				i++;
 			}
+			
+			for (i=0; i<tempCur; i++)
+			{
+				insert(tempHeapNodes[i]);	
+			}
+			
 			return listToReturn;
 		}
 	}
@@ -140,6 +182,16 @@ public class IdeaHN {
 			//index = curHeap;
 			downHeap(max);
 		}
+	}
+	
+	public int getPosOfIdea(Idea inIdea){
+		//returns the position of the HeapNode
+		for(int yugioh=1;yugioh<currentSize+1;yugioh++){
+			if(myArray[yugioh].returnIdea()==inIdea){
+				return yugioh;
+			}
+		}
+		return -1;
 	}
 
 }
